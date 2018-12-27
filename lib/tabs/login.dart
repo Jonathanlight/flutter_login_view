@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_login_tab/services/query.dart';
+import 'package:flutter_login_tab/view/drawer.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -72,6 +73,7 @@ class LoginState extends State<Login> {
         print(dataPost['id']);
         time(3);
         //onButtonRouteReplace('/drawerPage');
+        onButtonTapReplace(DrawerPage());
       } else {
         setState(() { error = 'login failed'; });
         time(3);
@@ -84,6 +86,12 @@ class LoginState extends State<Login> {
 
   onButtonTap(Widget page) {
     Navigator.push(
+        context, MaterialPageRoute(builder: (BuildContext context) => page)
+        );
+  }
+
+  onButtonTapReplace(Widget page) {
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (BuildContext context) => page)
         );
   }
