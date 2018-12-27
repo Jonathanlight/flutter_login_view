@@ -22,6 +22,7 @@ class LoginState extends State<Login> {
 
   String error = '';
   String urlPath = 'https://cryptizy.com/api/';
+  var dataPost;
 
   bool _obscureText = true;
 
@@ -30,6 +31,21 @@ class LoginState extends State<Login> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  Future<List> testCallGet() async {
+    final response = Query.getData('https://reqres.in/api/users?page=2');
+
+    print(response);
+  }
+
+  Future<List> testCallPost() async {
+    final response = Query.postData('connexion', {
+      'email': email.text,
+      'password': password.text,
+    });
+
+    print(response);
   }
 
   Future time(int time) async {
@@ -43,25 +59,33 @@ class LoginState extends State<Login> {
     return c.future;
   }
 
+
+
   Future<List> _login() async {
-    final response = await http.post(urlPath + 'connexion', body: {
+    final response = await http.post(
+      Uri.encodeFull(urlPath + 'connexion'), 
+      headers: { "Accept": "application/json" },
+      body: {
       'email': email.text,
       'password': password.text,
     });
 
-    var dataUser = json.decode(response.body);
+    dataPost = json.decode(response.body);
 
-    //onButtonRouteReplace('/drawerPage');
-    if(dataUser.length == 0) {
-      setState(() { error = 'login failed'; });
-      time(3);
+    if(response.statusCode >= 200 && response.statusCode <= 210) {
+      if (null != dataPost['id']) {
+        setState(() { error = 'login good'; });
+        print(dataPost['id']);
+        time(3);
+        //onButtonRouteReplace('/drawerPage');
+      } else {
+        setState(() { error = 'login failed'; });
+        time(3);
+      }
     } else {
-      setState(() { error = 'login good'; });
+      setState(() { error = 'query failed'; });
       time(3);
     }
-
-
-      print(dataUser);
   }
 
   onButtonTap(Widget page) {
@@ -123,14 +147,15 @@ class LoginState extends State<Login> {
                 decoration: new InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Password",
+                  filled: true,
+                  suffixIcon: IconButton(
+                      icon: Icon(Icons.remove_red_eye),
+                      onPressed: _toggle
+                  ),
                 ),
                 keyboardType: TextInputType.text,
                 style: TextStyle(color: Colors.red, fontWeight: FontWeight.normal),
               ),
-            ),
-            new FlatButton(
-                onPressed: _toggle,
-                child: new Text(_obscureText ? "👁️" : "❌")
             ),
             new Container(
               width: _width,
@@ -141,7 +166,7 @@ class LoginState extends State<Login> {
                     color: Colors.white
                   ),
                 ),
-                onPressed: () => _login(),
+                onPressed: () => testCallGet(),
                 color: Colors.blue,
               ),
               margin: new EdgeInsets.only(
@@ -160,7 +185,7 @@ class LoginState extends State<Login> {
               margin: new EdgeInsets.only(
                 top: 20.0
               ),
-            )
+            ),
           ],
         ),
       ),

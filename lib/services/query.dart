@@ -1,31 +1,57 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
-class Query extends StatefulWidget {
-  @override
-  QueryState createState() => new QueryState();
-}
-
-// SingleTickerProviderStateMixin is used for animation
-class QueryState extends State<Query> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class QueryService {
   static String urlPath = 'https://cryptizy.com/api/';
 
-  static Future<List> _postLogin(String endpoint, Object data) async {
-    final response = await http.post(urlPath + endpoint, body: data);
+  ///
+  /// @Desc: Post Method Query
+  static Future<List> postData(String endpoint, Object data) async {
+    await new Future.delayed(new Duration(seconds: 3));
+    final response = await http.post(
+      Uri.encodeFull(urlPath + endpoint), 
+      headers: { "Accept": "application/json" },
+      body: data
+    );
 
-    var dataUser = json.decode(response.body);
-
-    return dataUser;
+    return jsonDecode(response.body);
   }
 
-  @override
-  Widget build(BuildContext context) {}
+  ///
+  /// @Desc: Put Method Query
+  static Future<List> putData(String endpoint, Object data) async {
+    await new Future.delayed(new Duration(seconds: 3));
+    final response = await http.put(
+      Uri.encodeFull(urlPath + endpoint), 
+      headers: { "Accept": "application/json" },
+      body: data
+    );
+
+    return jsonDecode(response.body);
+  }
+
+  ///
+  /// @Desc: Get Method Query
+  static Future<String> getData(String endpoint) async {
+    await new Future.delayed(new Duration(seconds: 3));
+    final response = await http.get(
+      Uri.encodeFull(endpoint),
+      headers: { "Accept": "application/json" }
+    );
+
+    return jsonDecode(response.body);
+  } 
+
+  ///
+  /// @Desc: Delete Method Query
+  static Future<List> deleteData(String endpoint) async {
+    await new Future.delayed(new Duration(seconds: 3));
+    final response = await http.delete(
+      Uri.encodeFull(urlPath + endpoint), 
+      headers: { "Accept": "application/json" }
+    );
+
+    return jsonDecode(response.body);
+  }
 }
