@@ -3,8 +3,6 @@ import 'package:flutter_login_tab/main.dart';
 import 'package:flutter_login_tab/view/home.dart';
 import 'package:flutter_login_tab/view/profil.dart';
 
-
-
 class DrawerItem {
   String title;
   IconData icon;
@@ -12,6 +10,27 @@ class DrawerItem {
 }
 
 class DrawerPage extends StatefulWidget {
+  String email;
+  String name;
+
+  DrawerPage(this.email, this.name);
+
+  String get getName {
+    return name;
+  }
+ 
+  set setName(String newName) {
+    name = newName;
+  }
+
+  String get getEmail {
+    return email;
+  }
+ 
+  set setEmail(String newEmail) {
+    email = newEmail;
+  }
+
   final drawerItems = [
     new DrawerItem("Home", Icons.home),
     new DrawerItem("Profil", Icons.person)
@@ -25,6 +44,11 @@ class DrawerPage extends StatefulWidget {
 
 class DrawerPageState extends State<DrawerPage> {
   int _selectedDrawerIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {

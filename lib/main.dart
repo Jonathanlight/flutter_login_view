@@ -10,7 +10,6 @@ void main() {
     debugShowCheckedModeBanner: false,
     home: new MyHome(),
     routes: {
-        '/drawerPage': (context) => DrawerPage(),
         '/home': (context) => MyHome(),
       },
     ),

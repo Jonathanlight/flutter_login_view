@@ -35,14 +35,18 @@ class LoginState extends State<Login> {
   }
 
   testCallGet() {
-    print(QueryService.getData('https://reqres.in/api/users?page=2'));
+    var body = QueryService.getData('https://reqres.in/api/users?page=2');
+
+    print(body);
   }
 
   testCallPost() {
-    print(QueryService.postData('connexion', {
+    var body = QueryService.postData(urlPath + 'connexion', {
       'email': email.text,
       'password': password.text,
-    }));
+    });
+
+    print(body);
   }
 
   Future time(int time) async {
@@ -73,7 +77,7 @@ class LoginState extends State<Login> {
         print(dataPost['id']);
         time(3);
         //onButtonRouteReplace('/drawerPage');
-        onButtonTapReplace(DrawerPage());
+        onButtonTapReplace_(DrawerPage(dataPost['prenom'], dataPost['email']));
       } else {
         setState(() { error = 'login failed'; });
         time(3);
@@ -86,6 +90,12 @@ class LoginState extends State<Login> {
 
   onButtonTap(Widget page) {
     Navigator.push(
+        context, MaterialPageRoute(builder: (BuildContext context) => page)
+        );
+  }
+
+  onButtonTapReplace_(Widget page) {
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (BuildContext context) => page)
         );
   }
@@ -168,7 +178,7 @@ class LoginState extends State<Login> {
                     color: Colors.white
                   ),
                 ),
-                onPressed: () => _login(),
+                onPressed: () => testCallGet(),
                 color: Colors.blue,
               ),
               margin: new EdgeInsets.only(
@@ -181,7 +191,7 @@ class LoginState extends State<Login> {
                 error,
                 style: new TextStyle(
                   fontSize: 20.0,
-                  color: Colors.red
+                  color: Colors.green
                 ),
               ),
               margin: new EdgeInsets.only(

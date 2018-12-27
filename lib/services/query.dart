@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 class QueryService {
-  static String urlPath = 'https://cryptizy.com/api/';
-
   ///
   /// @Desc: Post Method Query
-  static Future<List> postData(String endpoint, Object data) async {
+  static Future<List> postData_(String endpoint, Object data) async {
     await new Future.delayed(new Duration(seconds: 3));
     final response = await http.post(
-      Uri.encodeFull(urlPath + endpoint), 
+      Uri.encodeFull(endpoint), 
       headers: { "Accept": "application/json" },
       body: data
     );
@@ -23,7 +21,7 @@ class QueryService {
   static Future<List> putData(String endpoint, Object data) async {
     await new Future.delayed(new Duration(seconds: 3));
     final response = await http.put(
-      Uri.encodeFull(urlPath + endpoint), 
+      Uri.encodeFull(endpoint), 
       headers: { "Accept": "application/json" },
       body: data
     );
@@ -33,7 +31,7 @@ class QueryService {
 
   ///
   /// @Desc: Get Method Query
-  static Future<String> getData(String endpoint) async {
+  static Future<String> getData_(String endpoint) async {
     await new Future.delayed(new Duration(seconds: 3));
     final response = await http.get(
       Uri.encodeFull(endpoint),
@@ -48,10 +46,46 @@ class QueryService {
   static Future<List> deleteData(String endpoint) async {
     await new Future.delayed(new Duration(seconds: 3));
     final response = await http.delete(
-      Uri.encodeFull(urlPath + endpoint), 
+      Uri.encodeFull(endpoint), 
       headers: { "Accept": "application/json" }
     );
 
     return jsonDecode(response.body);
   }
+
+
+
+  /**
+   * Post Method Query
+   */
+  static Future<Map<String, dynamic>> postData(String endpoint, Object data) async {
+    // This might fail, use List<dynamic> if it does
+    await new Future.delayed(new Duration(seconds: 3));
+    final response = await http.post(
+      Uri.encodeFull(endpoint), 
+      headers: { "Accept": "application/json" },
+      body: data
+    );
+
+    print(response.body);
+
+    return json.decode(response.body);
+  }
+
+  /**
+   * Get Method Query
+   */
+  static Future<Map<String, dynamic>> getData(String endpoint) async {
+    await new Future.delayed(new Duration(seconds: 3));
+    final response = await http.get(
+      Uri.encodeFull(endpoint),
+      headers: { "Accept": "application/json" }
+    );
+    
+    print(response.body);
+
+    return json.decode(response.body);
+  }
+
+
 }
