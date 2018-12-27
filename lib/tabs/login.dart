@@ -33,19 +33,15 @@ class LoginState extends State<Login> {
     });
   }
 
-  Future<List> testCallGet() async {
-    final response = Query.getData('https://reqres.in/api/users?page=2');
-
-    print(response);
+  testCallGet() {
+    print(QueryService.getData('https://reqres.in/api/users?page=2'));
   }
 
-  Future<List> testCallPost() async {
-    final response = Query.postData('connexion', {
+  testCallPost() {
+    print(QueryService.postData('connexion', {
       'email': email.text,
       'password': password.text,
-    });
-
-    print(response);
+    }));
   }
 
   Future time(int time) async {
@@ -58,8 +54,6 @@ class LoginState extends State<Login> {
 
     return c.future;
   }
-
-
 
   Future<List> _login() async {
     final response = await http.post(
@@ -102,7 +96,7 @@ class LoginState extends State<Login> {
 
   onButtonRouteReplace(String route) {
     Navigator.pushReplacementNamed(
-      context, route
+      context, route,
       );
   }
 
@@ -166,7 +160,7 @@ class LoginState extends State<Login> {
                     color: Colors.white
                   ),
                 ),
-                onPressed: () => testCallGet(),
+                onPressed: () => _login(),
                 color: Colors.blue,
               ),
               margin: new EdgeInsets.only(
