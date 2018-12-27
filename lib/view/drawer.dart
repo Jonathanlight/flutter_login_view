@@ -44,10 +44,15 @@ class DrawerPage extends StatefulWidget {
 
 class DrawerPageState extends State<DrawerPage> {
   int _selectedDrawerIndex = 0;
+  var email = '';
+  var name = '';
 
   @override
   void initState() {
     super.initState();
+
+    email = widget.email;
+    name = widget.name;
   }
 
   _getDrawerItemWidget(int pos) {
@@ -118,7 +123,7 @@ class DrawerPageState extends State<DrawerPage> {
         child: new Column(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-                accountName: new Text("John Doe"), accountEmail: null),
+                accountName: new Text(name), accountEmail: new Text(email)),
             new Column(children: drawerOptions,)
           ],
         ),

@@ -53,8 +53,6 @@ class QueryService {
     return jsonDecode(response.body);
   }
 
-
-
   /**
    * Post Method Query
    */
@@ -66,8 +64,6 @@ class QueryService {
       headers: { "Accept": "application/json" },
       body: data
     );
-
-    print(response.body);
 
     return json.decode(response.body);
   }
@@ -82,8 +78,6 @@ class QueryService {
       headers: { "Accept": "application/json" }
     );
     
-    print(response.body);
-
     return json.decode(response.body);
   }
 

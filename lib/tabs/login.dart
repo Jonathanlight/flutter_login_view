@@ -41,12 +41,12 @@ class LoginState extends State<Login> {
   }
 
   testCallPost() {
-    var body = QueryService.postData(urlPath + 'connexion', {
+    var dataPost = QueryService.postData(urlPath + 'connexion', {
       'email': email.text,
       'password': password.text,
     });
 
-    print(body);
+    print(dataPost);
   }
 
   Future time(int time) async {
@@ -178,7 +178,7 @@ class LoginState extends State<Login> {
                     color: Colors.white
                   ),
                 ),
-                onPressed: () => testCallGet(),
+                onPressed: () => testCallPost(),
                 color: Colors.blue,
               ),
               margin: new EdgeInsets.only(
