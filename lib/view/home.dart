@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_tab/services/query.dart';
 
 class Home extends StatefulWidget {
+
+  String email;
+  String name;
+  int id;
+
+  Home(this.id, this.email, this.name);
+
   @override
   HomeState createState() => new HomeState();
 }
@@ -8,9 +16,33 @@ class Home extends StatefulWidget {
 // SingleTickerProviderStateMixin is used for animation
 class HomeState extends State<Home> {
 
+  String email = '';
+  String name = '';
+  int id;
+  String reference = '';
+  String telephone = '';
+
+  String error = '';
+  String urlPath = 'https://cryptizy.com/api/';
+  var dataPost;
+
   @override
   void initState() {
     super.initState();
+
+    id = widget.id;
+    email = widget.email;
+    name = widget.name;
+
+    dataPost = QueryService.getData(urlPath + 'user/$id');
+
+    dataPost.then((response) {
+      reference = response['reference'];
+      telephone = response['telephone'];
+    });
+    dataPost.catchError((error) {
+      print(error);
+    });
   }
 
   @override
@@ -18,10 +50,12 @@ class HomeState extends State<Home> {
     return new Container(
       child: new Center(
         child: new Column(
-          // center the children
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Text("Home Tab")
+            new Text("Email: $email"),
+            new Text("Nom: $name"),
+            new Text("Réference: $reference"),
+            new Text("Télephone: $telephone"),
           ],
         ),
       ),

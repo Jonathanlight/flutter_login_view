@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_login_tab/services/query.dart';
+import 'package:flutter_login_tab/services/alert.dart';
 import 'package:flutter_login_tab/view/drawer.dart';
 
 class Login extends StatefulWidget {
@@ -18,12 +19,36 @@ class LoginState extends State<Login> {
     super.initState();
   }
 
+  void _showDialog(String title, String content) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   var email = new TextEditingController();
   var password = new TextEditingController();
 
   String error = '';
   String urlPath = 'https://cryptizy.com/api/';
   var dataPost;
+  var dataRow;
 
   bool _obscureText = true;
 
@@ -46,11 +71,26 @@ class LoginState extends State<Login> {
       'password': password.text,
     });
 
-    print(dataPost);
+    dataPost.then((response) {
+
+      if (response is bool) {
+        _showDialog("Error", "Query not found !");
+      }
+
+      if(response['error'] is String) {
+        _showDialog("Error", response['error']);
+      } else {
+        _showDialog(response['prenom'], response['email']);
+        time(3);
+        onButtonTapReplace_(DrawerPage(response['id'], response['prenom'], response['email']));
+      }
+    });
+    dataPost.catchError((error) {
+      _showDialog("Error", error);
+    });
   }
 
   Future time(int time) async {
-
     Completer c = new Completer();
     new Timer(new Duration(seconds: time), (){
       c.complete('done with time out');
@@ -76,8 +116,7 @@ class LoginState extends State<Login> {
         setState(() { error = 'login good'; });
         print(dataPost['id']);
         time(3);
-        //onButtonRouteReplace('/drawerPage');
-        onButtonTapReplace_(DrawerPage(dataPost['prenom'], dataPost['email']));
+        onButtonTapReplace_(DrawerPage(dataPost['id'], dataPost['prenom'], dataPost['email']));
       } else {
         setState(() { error = 'login failed'; });
         time(3);
