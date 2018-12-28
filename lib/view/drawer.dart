@@ -12,24 +12,9 @@ class DrawerItem {
 class DrawerPage extends StatefulWidget {
   String email;
   String name;
+  int id;
 
-  DrawerPage(this.email, this.name);
-
-  String get getName {
-    return name;
-  }
- 
-  set setName(String newName) {
-    name = newName;
-  }
-
-  String get getEmail {
-    return email;
-  }
- 
-  set setEmail(String newEmail) {
-    email = newEmail;
-  }
+  DrawerPage(this.id, this.email, this.name);
 
   final drawerItems = [
     new DrawerItem("Home", Icons.home),
@@ -44,6 +29,7 @@ class DrawerPage extends StatefulWidget {
 
 class DrawerPageState extends State<DrawerPage> {
   int _selectedDrawerIndex = 0;
+  var id;
   var email = '';
   var name = '';
 
@@ -51,6 +37,7 @@ class DrawerPageState extends State<DrawerPage> {
   void initState() {
     super.initState();
 
+    id = widget.id;
     email = widget.email;
     name = widget.name;
   }
@@ -58,7 +45,7 @@ class DrawerPageState extends State<DrawerPage> {
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return new Home();
+        return new Home(id, email, name);
       case 1:
         return new Profil();
 
