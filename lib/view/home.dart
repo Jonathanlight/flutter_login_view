@@ -35,14 +35,18 @@ class HomeState extends State<Home> {
     name = widget.name;
 
     dataPost = QueryService.getData(urlPath + 'user/$id');
-
+    Map<String, dynamic> dataResponse;
     dataPost.then((response) {
-      reference = response['reference'];
-      telephone = response['telephone'];
+      dataResponse = response;
+      final reference = response['reference'];
+      final telephone = response['telephone'];
     });
     dataPost.catchError((error) {
       print(error);
     });
+
+    print(dataResponse);
+
   }
 
   @override
