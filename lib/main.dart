@@ -63,33 +63,63 @@ class MyHomeState extends State<MyHome> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(
-          title: new Text("Home"),
-          backgroundColor: Colors.blue,
+    const Color colorAccentColor = Color(0x805BA51);
+
+    return new Stack(
+      children: <Widget>[
+        Container(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("assets/images/fond.jpg"), 
+              fit: BoxFit.cover
+            )
+          ),
         ),
-      body: pages[i],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: i,
-        type: BottomNavigationBarType.fixed,
-        onTap: _onItemTapped,
-        fixedColor: Colors.red,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: new Icon(Icons.home),
-              title: new Text("Login")
+        Scaffold(
+          appBar: new AppBar(
+              title: new Text("Home"),
+              backgroundColor: Colors.black,
+              elevation: 0,
+              flexibleSpace: Container(
+                height: 25.0,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  backgroundBlendMode: BlendMode.darken,
+                ),
+              ),
+              brightness: Brightness.light,
+            ),
+          body: pages[i],
+          bottomNavigationBar: Theme(
+            data: Theme.of(context).copyWith(
+              canvasColor: colorAccentColor,
+              //primaryColor: Colors.orangeAccent,
+              textTheme: Theme.of(context)
+                  .textTheme
+                  .copyWith(caption: new TextStyle(color: Colors.black45))),
+              child: BottomNavigationBar(
+              currentIndex: i,
+              type: BottomNavigationBarType.fixed,
+              onTap: _onItemTapped,
+              fixedColor: Colors.red,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                    icon: new Icon(Icons.home),
+                    title: new Text("Login")
+                ),
+                BottomNavigationBarItem(
+                    icon: new Icon(Icons.person_add),
+                    title: new Text("Register")
+                ),
+                BottomNavigationBarItem(
+                    icon: new Icon(Icons.favorite),
+                    title: new Text("Favorite")
+                )
+              ],
+            ),
           ),
-          BottomNavigationBarItem(
-              icon: new Icon(Icons.person_add),
-              title: new Text("Register")
-          ),
-          BottomNavigationBarItem(
-              icon: new Icon(Icons.favorite),
-              title: new Text("Favorite")
-          )
-        ],
-      ),
-      // code removed for brevity
+        )
+      ],
     );
   }
 }

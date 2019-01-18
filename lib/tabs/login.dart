@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_login_tab/services/query.dart';
@@ -162,84 +164,123 @@ class LoginState extends State<Login> {
 
     double width = MediaQuery.of(context).size.width;
     double _width = width * 0.65;
+    
 
-    return new Container(
-      child: new Center(
-        child: new Column(
-          // center the children
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Icon(
-              Icons.person,
-              size: 160.0,
-              color: Colors.red,
-            ),
-            new ListTile(
-              leading: const Icon(Icons.person),
-              title: new TextField(
-                controller: email,
-                autocorrect: true,
-                textAlign: TextAlign.left,
-                decoration: new InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Username",
-                  helperText: "Your username"
-                ),
-                keyboardType: TextInputType.text,
-                style: TextStyle(color: Colors.red, fontWeight: FontWeight.w300),
-              ),
-            ),
-            new ListTile(
-              leading: const Icon(Icons.phone),
-              title: new TextField(
-                controller: password,
-                obscureText: _obscureText,
-                maxLength: 150,
-                decoration: new InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Password",
-                  filled: true,
-                  suffixIcon: IconButton(
-                      icon: Icon(Icons.remove_red_eye),
-                      onPressed: _toggle
-                  ),
-                ),
-                keyboardType: TextInputType.text,
-                style: TextStyle(color: Colors.red, fontWeight: FontWeight.normal),
-              ),
-            ),
-            new Container(
-              width: _width,
-              child: new RaisedButton(
-                child: new Text(
-                  'Login',
-                  style: new TextStyle(
-                    color: Colors.white
-                  ),
-                ),
-                onPressed: () => testCallPost(),
-                color: Colors.blue,
-              ),
-              margin: new EdgeInsets.only(
-                top: 20.0
-              ),
-            ),
-            new Container(
-              width: _width,
-              child: new Text(
-                error,
-                style: new TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.green
-                ),
-              ),
-              margin: new EdgeInsets.only(
-                top: 20.0
-              ),
-            ),
-          ],
-        ),
-      ),
+    return new GestureDetector(
+      onTap: (() => FocusScope.of(context).requestFocus(new FocusNode())),
+      child: 
+      (Platform.isIOS)
+      ?
+        new CupertinoPageScaffold(
+          child: body(_width),
+        )
+      :
+      new Scaffold(
+          backgroundColor: Colors.white,
+          body: body(_width),
+        )
     );
   }
+
+
+  Widget body(double width) {
+    return new Stack(
+      children: <Widget>[
+        new Container(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("assets/images/fond.jpg"), 
+              fit: BoxFit.cover
+            )
+          ),
+        ),
+        SingleChildScrollView(
+          child: new Container(
+            color: Colors.transparent,
+            margin: EdgeInsets.all(30),
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Padding( padding: EdgeInsets.only(top: 100.0)),
+                    new Icon(
+                      Icons.person,
+                      size: 160.0,
+                      color: Colors.red,
+                    ),
+                    new ListTile(
+                      leading: const Icon(Icons.person),
+                      title: new TextField(
+                        controller: email,
+                        autocorrect: true,
+                        textAlign: TextAlign.left,
+                        decoration: new InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Username",
+                          helperText: "Your username"
+                        ),
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.w300),
+                      ),
+                    ),
+                    new ListTile(
+                      leading: const Icon(Icons.phone),
+                      title: new TextField(
+                        controller: password,
+                        obscureText: _obscureText,
+                        maxLength: 150,
+                        decoration: new InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Password",
+                          filled: true,
+                          suffixIcon: IconButton(
+                              icon: Icon(Icons.remove_red_eye),
+                              onPressed: _toggle
+                          ),
+                        ),
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                    new Container(
+                      width: width,
+                      child: new RaisedButton(
+                        child: new Text(
+                          'Login',
+                          style: new TextStyle(
+                            color: Colors.white
+                          ),
+                        ),
+                        onPressed: () => testCallPost(),
+                        color: Colors.blue,
+                      ),
+                      margin: new EdgeInsets.only(
+                        top: 20.0
+                      ),
+                    ),
+                    new Container(
+                      width: width,
+                      child: new Text(
+                        error,
+                        style: new TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.green
+                        ),
+                      ),
+                      margin: new EdgeInsets.only(
+                        top: 20.0
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
 }
